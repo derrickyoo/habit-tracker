@@ -37,6 +37,11 @@ try {
 		console.log("Invalid env var");
 		console.error(JSON.stringify(err.flatten().fieldErrors, null, 2));
 
+		err.issues.forEach((e) => {
+			const path = e.path.join(".");
+			console.log(`${path}: ${e.message}`);
+		});
+
 		process.exit(1);
 	}
 
