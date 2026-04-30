@@ -1,5 +1,7 @@
 import express from "express";
-import { kMaxLength } from "node:buffer";
+import authRoutes from "./routes/authRoutes.ts";
+import userRoutes from "./routes/userRoutes.ts";
+import habitRoutes from "./routes/habitRoutes.ts";
 
 const app = express();
 
@@ -7,14 +9,9 @@ app.get("/health", (_, res) => {
 	res.json({ message: "hello" }).status(200);
 });
 
-app.post("/cake", (_, res) => {
-	res.send("ok");
-});
-
-app.get("/cake/:name/:id", (req, res) => {
-	console.log(req.params.name, req.params.id);
-	res.send({ name: req.params.name, id: req.params.id });
-});
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/habits", habitRoutes);
 
 export { app };
 export default app;
