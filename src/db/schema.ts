@@ -1,3 +1,4 @@
+import { Many, relations } from "drizzle-orm";
 import {
 	boolean,
 	integer,
@@ -7,6 +8,8 @@ import {
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
+import { createUpdateSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const users = pgTable("users", {
 	id: uuid("id").primaryKey().defaultRandom(),
@@ -96,3 +99,44 @@ export const habitTags = pgTable("habitTags", {
 		.notNull()
 		.$onUpdate(() => new Date()),
 });
+
+export const usersRelations = relations(users, ({ many }) => ({
+	habits: many(habits),
+}));
+
+export const habitsRelations = relations(habits, ({ one, many }) => ({
+	user: one(users, {
+		fields: [habits.userId],
+		references: [users.id],
+	}),
+	entries: many(entries),
+	habitTags: many(habitTags),
+}));
+
+export const entriesRelations = relations(entries, ({ one }) => ({
+	habit: one(habits, {
+		fields: [entries.habitId],
+		references: [habits.id],
+	}),
+}));
+
+export const tagsRelations = relations(tags, ({ many }) => ({
+	habitTags: many(habitTags),
+}));
+
+export const habitTagsRelations = relations(habitTags, ({ one }) => ({
+	habit: one(habits, {
+		fields: [habitTags.habitId],
+		references: [habits.id],
+	}),
+}));
+
+export type User = typeof users.$inferSelect;
+export type Habit = typeof habits.$inferSelect;
+export type Entry = typeof entries.$inferSelect;
+export type Tag = typeof tags.$inferSelect;
+export type HabitTag = typeof habitTags.$inferSelect;
+
+export const userInsertSchema = createInsertSchema(users);
+export const userSelectSchema = createSelectSchema(users);
+export const userUpdateSchema = createUpdateSchema(users);
