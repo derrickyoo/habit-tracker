@@ -1,8 +1,8 @@
+import { remember } from "@epic-web/remember";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import { env, isProd } from "../../env.ts";
 import * as schema from "./schema.ts";
-import { remember } from "@epic-web/remember";
 
 const createPool = () => {
 	return new Pool({

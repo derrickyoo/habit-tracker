@@ -129,6 +129,10 @@ export const habitTagsRelations = relations(habitTags, ({ one }) => ({
 		fields: [habitTags.habitId],
 		references: [habits.id],
 	}),
+	tag: one(tags, {
+		fields: [habitTags.tagId],
+		references: [tags.id],
+	}),
 }));
 
 export type User = typeof users.$inferSelect;
