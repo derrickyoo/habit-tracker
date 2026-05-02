@@ -2,6 +2,7 @@ import { Router } from "express";
 import { z } from "zod";
 import { validateBody, validateParams } from "../middleware/validation.ts";
 import { authenticateToken } from "../middleware/auth.ts";
+import { createHabit } from "../controllers/habitController.ts";
 
 const habitInsertSchema = z.object({
 	name: z.string(),
@@ -22,9 +23,7 @@ router.get("/:id", (req, res) => {
 	res.json({ message: "retrieved habit" });
 });
 
-router.post("/", [validateBody(habitInsertSchema)], (req, res) => {
-	res.json({ message: "created habit" });
-});
+router.post("/", validateBody(habitInsertSchema), createHabit);
 
 router.patch(
 	"/:id",

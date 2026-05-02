@@ -146,3 +146,7 @@ export type HabitTag = typeof habitTags.$inferSelect;
 export const userInsertSchema = createInsertSchema(users);
 export const userSelectSchema = createSelectSchema(users);
 export const userUpdateSchema = createUpdateSchema(users);
+
+export const habitInsertSchema = createInsertSchema(habits);
+export const habitSelectSchema = createSelectSchema(habits);
+export const habitUpdateSchema = createUpdateSchema(habits);
